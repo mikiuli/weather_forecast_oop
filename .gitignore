@@ -1,0 +1,7 @@
+.env
+venv
+setup.cfg
+__pycache__
+weather_forecast.db
+weather_storage.txt
+.pre-commit-config.yaml
