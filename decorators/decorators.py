@@ -12,8 +12,6 @@ def errors_manager(func) -> Callable:
     Декоратор
     Отлавливает пользовательские ошибки и завершает работу программы
     при наличии ошибок
-    Params: custom_exceptions: родительский класс пользовательских ошибок
-    Returns: декоратор
     """
     @wraps(func)
     def wrapper(*args, **kwargs) -> None:

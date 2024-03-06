@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 
-from api_services.weather import Weather
+from weather_getter.weather_api_services import Weather
 
 
 class TextFileStorageInfo(StrEnum):
@@ -15,8 +15,12 @@ class TextFileStorage:
     """
     Хранение погоды в виде текстового файла
     """
-    def __init__(self):
+    def __enter__(self):
         self.file = open(TextFileStorageInfo.file_name, "a+", encoding=TextFileStorageInfo.encoding)
+        return self
+
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        self.file.close()
 
     def save_weather_data(self, data: Weather) -> None:
         """
@@ -58,12 +62,4 @@ class TextFileStorage:
         Returns: -
         """
         self.file = open(TextFileStorageInfo.file_name, "w", encoding=TextFileStorageInfo.encoding)
-        self.file.close()
-
-    def to_close(self):
-        """
-        Корректно закрывает соединение с хранилищем
-        Params: -
-        Returns: -
-        """
         self.file.close()

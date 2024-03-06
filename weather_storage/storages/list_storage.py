@@ -2,15 +2,19 @@
 
 from copy import deepcopy
 
-from api_services.weather import Weather
+from weather_getter.weather_api_services import Weather
 
 
 class ListStorage:
     """
     Хранение погоды в виде списка
     """
-    def __init__(self) -> None:
+    def __enter__(self):
         self.weather_storage_list = []
+        return self
+
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        pass
 
     def save_weather_data(self, data: Weather) -> None:
         """
@@ -51,11 +55,3 @@ class ListStorage:
         Returns: -
         """
         self.weather_storage_list = []
-
-    def to_close(self) -> None:
-        """
-        Корректно закрывает соединение с хранилищем
-        Params: -
-        Returns: -
-        """
-        pass

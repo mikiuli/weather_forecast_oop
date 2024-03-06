@@ -3,7 +3,7 @@
 import sqlite3
 
 from errors.errors import NoConnectionWithDBError
-from api_services.weather import Weather
+from weather_getter.weather_api_services.weather import Weather
 
 CREATE_TABLE_QUERY = """CREATE TABLE IF NOT EXISTS weather_data (
     id INTEGER PRIMARY KEY,
@@ -29,15 +29,18 @@ class SQLiteStorage:
     """
     Хранение погоды в базе данных sqlite3
     """
-    def __init__(self):
+    def __enter__(self):
         try:
             self.connection = sqlite3.connect("weather_forecast.db")
-            self.cursor = self.connection.cursor()
-            self._init_table(self.connection)
+            self._init_table()
+            return self
         except sqlite3.OperationalError:
             raise NoConnectionWithDBError()
 
-    def _init_table(self, connection: sqlite3.Connection) -> None:
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        self.connection.close()
+
+    def _init_table(self) -> None:
         """
         Создает таблицу в базе данных
         params: connection: соединение с базой данных, открытое
@@ -45,12 +48,13 @@ class SQLiteStorage:
         returns: -
         """
         try:
-            self.cursor.execute(CREATE_TABLE_QUERY)
+            cursor = self.connection.cursor()
+            cursor.execute(CREATE_TABLE_QUERY)
             try:
-                self.cursor.execute(CREATE_INDEX_QUERY)
+                cursor.execute(CREATE_INDEX_QUERY)
             except sqlite3.OperationalError:
                 pass
-            connection.commit()
+            self.connection.commit()
         except sqlite3.OperationalError:
             raise NoConnectionWithDBError()
 
@@ -61,8 +65,9 @@ class SQLiteStorage:
         Returns: -
         """
         try:
-            self.cursor.execute(INSERT_QUERY, (data.current_time, data.city, data.weather_type,
-                                               data.temperature, data.temperature_feels_like, data.wind_speed))
+            cursor = self.connection.cursor()
+            cursor.execute(INSERT_QUERY, (data.current_time, data.city, data.weather_type,
+                                          data.temperature, data.temperature_feels_like, data.wind_speed))
 
             self.connection.commit()
         except sqlite3.OperationalError:
@@ -75,8 +80,9 @@ class SQLiteStorage:
         Returns: список запросов в виде класса Weather
         """
         try:
-            self.cursor.execute(SELECT_LAST_N_REQUESTS_QUERY.format(number=number))
-            weather_datas = self.cursor.fetchall()
+            cursor = self.connection.cursor()
+            cursor.execute(SELECT_LAST_N_REQUESTS_QUERY.format(number=number))
+            weather_datas = cursor.fetchall()
 
             weather_datas_list = []
             for data in weather_datas:
@@ -94,15 +100,8 @@ class SQLiteStorage:
         Returns: -
         """
         try:
-            self.cursor.execute(DELETE_ALL_REQUESTS_QUERY)
+            cursor = self.connection.cursor()
+            cursor.execute(DELETE_ALL_REQUESTS_QUERY)
             self.connection.commit()
         except sqlite3.OperationalError:
             raise NoConnectionWithDBError()
-
-    def to_close(self) -> None:
-        """
-        Корректно закрывает соединение с хранилищем
-        Params: -
-        Returns: -
-        """
-        self.connection.close()

@@ -2,12 +2,12 @@
 
 from typing import Protocol
 
-from api_services.weather import Weather
+from weather_getter.weather_api_services.weather import Weather
 
 
 class Storage(Protocol):
     """
-    Интерфейс класса для хранения погоды
+    Интерфейс класса для хранилища информации о прогнозе погоды
     """
     def save_weather_data(self, data: Weather) -> None:
         """
@@ -28,14 +28,6 @@ class Storage(Protocol):
     def delete_weather_data(self) -> None:
         """
         Удаляет историю запросов погоды
-        Params: -
-        Returns: -
-        """
-        raise NotImplementedError
-
-    def to_close(self) -> None:
-        """
-        Корректно закрывает соединение с хранилищем
         Params: -
         Returns: -
         """

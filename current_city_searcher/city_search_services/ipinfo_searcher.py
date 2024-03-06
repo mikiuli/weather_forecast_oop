@@ -3,8 +3,6 @@
 import ipinfo
 from environs import Env
 
-from errors import errors
-
 
 class IpinfoSearcher:
     """Возвращает текущие координаты пользователя, используя библиотеку ipinfo"""
@@ -14,13 +12,10 @@ class IpinfoSearcher:
         params: -
         returns: Название города в виде строки
         """
-        try:
-            ipinfo_access_token = IpinfoSearcher.get_ipinfo_access_token()
-            handler = ipinfo.getHandler(access_token=ipinfo_access_token)
-            details = handler.getDetails()
-            return details.city
-        except Exception:
-            raise errors.CantGetUserCityError()
+        ipinfo_access_token = IpinfoSearcher.get_ipinfo_access_token()
+        handler = ipinfo.getHandler(access_token=ipinfo_access_token)
+        details = handler.getDetails()
+        return details.city
 
     @staticmethod
     def get_ipinfo_access_token() -> str:
