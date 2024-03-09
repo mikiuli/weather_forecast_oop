@@ -9,6 +9,12 @@ class Storage(Protocol):
     """
     Интерфейс класса для хранилища информации о прогнозе погоды
     """
+    def __enter__(self):
+        raise NotImplementedError
+
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        raise NotImplementedError
+
     def save_weather_data(self, data: Weather) -> None:
         """
         Сохраняет запрос прогноза погоды
