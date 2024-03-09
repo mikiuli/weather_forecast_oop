@@ -1,16 +1,15 @@
 """Получение погоды с сервиса openweathermap"""
 
-from errors import errors
-
 import json
 from json.decoder import JSONDecodeError
 from http import HTTPStatus
 from datetime import datetime, timezone, timedelta
 
 import requests
-from environs import Env
 
 from .weather import Weather, Celsius, MetresPerSec
+from errors import errors
+from configs.configs import get_openweather_key
 
 
 class OpenWeatherapiGetter:
@@ -22,25 +21,13 @@ class OpenWeatherapiGetter:
         Returns: погоду в виде экземпляра класса Weather
         """
         openweather_response = self._get_openweather_response(
-            openweatherAPI_key=OpenWeatherapiGetter._get_openweather_key(),
+            openweatherAPI_key=get_openweather_key(),
             city_name=city_name
         )
         if isinstance(openweather_response, int):
             return openweather_response
         weather = self._parse_openweather_response(openweather_response)
         return weather
-
-    @staticmethod
-    def _get_openweather_key() -> str:
-        """
-        Получает ключ от openweathermap.org из переменных окружения
-        Params: -
-        Returns: ключ от openweathermap.org
-        """
-        env = Env()
-        env.read_env()
-        openweather_key = env("OPENWEATHER_API")
-        return openweather_key
 
     @staticmethod
     def _check_status_code_OK(status_code: requests.status_codes) -> bool:
