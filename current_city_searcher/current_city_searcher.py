@@ -8,8 +8,8 @@ class CurrentCitySearcher:
     """Сервис для получения названия текущего города пользователя
     с использованием выбранной библиотеки"""
     def __init__(self):
-        self.selected_searcher = "ipinfo"
-        self.searchers_by_name = {
+        self.selected_service = "ipinfo"
+        self.services_by_name = {
             "geocoder": GeocoderService,
             "ipinfo": IpinfoService,
         }
@@ -20,17 +20,17 @@ class CurrentCitySearcher:
         Params: -
         Returns: название города
         """
-        city_searcher = self._get_city_searcher()
+        city_searching_service = self._get_city_searching_service()
         try:
-            city_name = city_searcher.get_current_city()
+            city_name = city_searching_service.get_current_city()
         except Exception:
             raise errors.CantGetUserCityError()
         return city_name
 
-    def _get_city_searcher(self) -> CurrentCitySearcherService:
+    def _get_city_searching_service(self) -> CurrentCitySearcherService:
         """
         Выбирает сервис для определения города пользователя
-        Params: name - название сервиса
+        Params: -
         Returns: экземпляр класса сервиса
         """
-        return self.searchers_by_name.get(self.selected_searcher)()
+        return self.services_by_name.get(self.selected_service)()
