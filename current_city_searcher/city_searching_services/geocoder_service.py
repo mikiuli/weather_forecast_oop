@@ -2,8 +2,10 @@
 
 import geocoder
 
+from .contracts import CurrentCitySearcherService
 
-class GeocoderSearcher:
+
+class GeocoderService(CurrentCitySearcherService):
     """Получает название города, в котором сейчас находится пользователь с помощью сервера geocoder"""
     def get_current_city(self) -> str:
         """

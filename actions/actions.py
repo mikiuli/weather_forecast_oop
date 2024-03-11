@@ -10,7 +10,7 @@ from errors import WrongCityName
 from decorators import errors_manager
 
 from weather_storage.storages.contracts import Storage
-from city_searcher_services import CitySearcherService
+from current_city_searcher.current_city_searcher import CurrentCitySearcher
 from weather_getter import get_weather
 
 
@@ -27,7 +27,7 @@ class GetLocalWeather(Action):
         Params: storage - хранилище данных о погоде
         Returns: -
         """
-        city_name = CitySearcherService().get_city()
+        city_name = CurrentCitySearcher().get_city()
         weather = get_weather(city_name)
         storage.save_weather_data(weather)
         print(weather)

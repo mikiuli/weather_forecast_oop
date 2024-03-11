@@ -2,10 +2,11 @@
 
 import ipinfo
 
+from .contracts import CurrentCitySearcherService
 from configs.configs import get_ipinfo_access_token
 
 
-class IpinfoSearcher:
+class IpinfoService(CurrentCitySearcherService):
     """Возвращает текущие координаты пользователя, используя библиотеку ipinfo"""
     def get_current_city(self) -> str:
         """

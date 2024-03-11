@@ -1,17 +1,17 @@
 """Получение названия города пользователя"""
 
-from .current_city_searchers import CurrentCitySearcher, GeocoderSearcher, IpinfoSearcher
+from .city_searching_services import CurrentCitySearcherService, GeocoderService, IpinfoService
 from errors import errors
 
 
-class CitySearcherService:
+class CurrentCitySearcher:
     """Сервис для получения названия текущего города пользователя
     с использованием выбранной библиотеки"""
     def __init__(self):
         self.selected_searcher = "ipinfo"
         self.searchers_by_name = {
-            "geocoder": GeocoderSearcher,
-            "ipinfo": IpinfoSearcher,
+            "geocoder": GeocoderService,
+            "ipinfo": IpinfoService,
         }
 
     def get_city(self) -> str:
@@ -27,7 +27,7 @@ class CitySearcherService:
             raise errors.CantGetUserCityError()
         return city_name
 
-    def _get_city_searcher(self) -> CurrentCitySearcher:
+    def _get_city_searcher(self) -> CurrentCitySearcherService:
         """
         Выбирает сервис для определения города пользователя
         Params: name - название сервиса
