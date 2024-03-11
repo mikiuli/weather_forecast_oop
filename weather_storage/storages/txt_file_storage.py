@@ -2,6 +2,7 @@
 
 from enum import StrEnum
 
+from .contracts import Storage
 from models.weather import Weather
 
 
@@ -11,7 +12,7 @@ class TextFileStorageInfo(StrEnum):
     encoding = "utf-8"
 
 
-class TextFileStorage:
+class TextFileStorage(Storage):
     """
     Хранение погоды в виде текстового файла
     """

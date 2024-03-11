@@ -2,6 +2,7 @@
 
 import sqlite3
 
+from .contracts import Storage
 from errors.errors import NoConnectionWithDBError
 from models.weather import Weather
 
@@ -25,7 +26,7 @@ ORDER BY id DESC
 LIMIT {number}"""
 
 
-class SQLiteStorage:
+class SQLiteStorage(Storage):
     """
     Хранение погоды в базе данных sqlite3
     """

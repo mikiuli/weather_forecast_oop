@@ -2,10 +2,11 @@
 
 from copy import deepcopy
 
+from .contracts import Storage
 from models.weather import Weather
 
 
-class ListStorage:
+class ListStorage(Storage):
     """
     Хранение погоды в виде списка
     """

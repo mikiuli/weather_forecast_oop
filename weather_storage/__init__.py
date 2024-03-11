@@ -1,3 +1,3 @@
-from .storage_creator import create_weather_storage
+from .storage_creator import StorageCreator
 
-__all__ = [create_weather_storage, ]
+__all__ = [StorageCreator, ]
