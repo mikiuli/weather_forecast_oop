@@ -10,7 +10,7 @@ from errors import WrongCityName
 from decorators import errors_manager
 
 from weather_storage.storages.contracts import Storage
-from current_city_searcher import get_city
+from city_searcher_services import get_city
 from weather_getter import get_weather
 
 

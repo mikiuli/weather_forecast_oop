@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from weather_getter.weather_api_services.weather import Weather
+from models.weather import Weather
 
 
 class Storage(Protocol):

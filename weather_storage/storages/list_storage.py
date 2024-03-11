@@ -2,7 +2,7 @@
 
 from copy import deepcopy
 
-from weather_getter.weather_api_services import Weather
+from models.weather import Weather
 
 
 class ListStorage:

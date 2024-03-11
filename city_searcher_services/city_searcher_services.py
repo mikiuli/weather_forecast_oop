@@ -1,6 +1,6 @@
 """Получение названия города пользователя"""
 
-from .city_search_services import CurrentCitySearcher, GeocoderSearcher, IpinfoSearcher
+from .current_city_searchers import CurrentCitySearcher, GeocoderSearcher, IpinfoSearcher
 from errors import errors
 
 

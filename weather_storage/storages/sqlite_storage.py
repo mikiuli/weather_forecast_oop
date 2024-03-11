@@ -3,7 +3,7 @@
 import sqlite3
 
 from errors.errors import NoConnectionWithDBError
-from weather_getter.weather_api_services.weather import Weather
+from models.weather import Weather
 
 CREATE_TABLE_QUERY = """CREATE TABLE IF NOT EXISTS weather_data (
     id INTEGER PRIMARY KEY,

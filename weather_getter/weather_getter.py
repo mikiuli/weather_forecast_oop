@@ -1,6 +1,7 @@
 """Получение погоды по названию города"""
 
-from .weather_api_services import Weather, WeatherGetter, OpenWeatherapiGetter
+from .weather_api_services import WeatherGetter, OpenWeatherapiGetter
+from models.weather import Weather
 
 
 def get_weather(city_name: str) -> Weather:

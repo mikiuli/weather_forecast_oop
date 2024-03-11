@@ -7,7 +7,7 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
-from .weather import Weather, Celsius, MetresPerSec
+from models.weather import Weather, Celsius, MetresPerSec
 from errors import errors
 from configs.configs import get_openweather_key
 

@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from .weather import Weather
+from models.weather import Weather
 
 
 class WeatherGetter(Protocol):
