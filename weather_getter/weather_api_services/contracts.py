@@ -5,7 +5,7 @@ from typing import Protocol
 from models.weather import Weather
 
 
-class WeatherGetter(Protocol):
+class WeatherDataReceivingService(Protocol):
     """Интерфейс класса для получения погоды по назанию города"""
     def get_weather_by_city(self, city: str) -> Weather:
         """

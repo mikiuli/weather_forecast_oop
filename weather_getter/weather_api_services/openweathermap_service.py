@@ -7,12 +7,13 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
+from .contracts import WeatherDataReceivingService
 from models.weather import Weather, Celsius, MetresPerSec
 from errors import errors
 from configs.configs import get_openweather_key
 
 
-class OpenWeatherapiGetter:
+class OpenWeatherapiService(WeatherDataReceivingService):
     """Получение погоды с сервиса openweathermap"""
     def get_weather_by_city(self, city_name: str) -> Weather:
         """
@@ -60,7 +61,7 @@ class OpenWeatherapiGetter:
             response = requests.get(url=url, timeout=3, params={"q": city_name})
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
             raise errors.InternetIsNotAvailable()
-        if OpenWeatherapiGetter._check_status_code_OK(response.status_code):
+        if OpenWeatherapiService._check_status_code_OK(response.status_code):
             try:
                 openweather_dict = json.loads(response.text)
             except JSONDecodeError:

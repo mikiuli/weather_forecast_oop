@@ -11,7 +11,7 @@ from decorators import errors_manager
 
 from weather_storage.storages.contracts import Storage
 from current_city_searcher.current_city_searcher import CurrentCitySearcher
-from weather_getter import get_weather
+from weather_getter import WeatherGetter
 
 
 class Action(Protocol):
@@ -28,7 +28,7 @@ class GetLocalWeather(Action):
         Returns: -
         """
         city_name = CurrentCitySearcher().get_city()
-        weather = get_weather(city_name)
+        weather = WeatherGetter().get_weather(city_name)
         storage.save_weather_data(weather)
         print(weather)
 
@@ -45,12 +45,12 @@ class GetWeatherbyCityName(Action):
         city_name = input().strip().lower()
         while True:
             try:
-                weather = get_weather(city_name)
+                weather = WeatherGetter().get_weather(city_name)
                 break
             except WrongCityName:
                 print(Text.wrong_city_name_text)
                 city_name = input().strip().lower()
-                weather = get_weather(city_name)
+                weather = WeatherGetter().get_weather(city_name)
         storage.save_weather_data(weather)
         print(weather)
 

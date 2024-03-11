@@ -1,3 +1,3 @@
-from .weather_getter import get_weather
+from .weather_getter import WeatherGetter
 
-__all__ = [get_weather, ]
+__all__ = [WeatherGetter, ]

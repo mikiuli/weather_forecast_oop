@@ -1,4 +1,4 @@
-from .contracts import WeatherGetter
-from .openweathermap_service import OpenWeatherapiGetter
+from .contracts import WeatherDataReceivingService
+from .openweathermap_service import OpenWeatherapiService
 
-__all__ = [WeatherGetter, OpenWeatherapiGetter]
+__all__ = [WeatherDataReceivingService, OpenWeatherapiService]
