@@ -1,6 +1,5 @@
-from actions import execute_action
+from app.app import App
 from lexicon import Text
-from weather_storage import StorageCreator
 
 
 def main() -> None:
@@ -9,9 +8,7 @@ def main() -> None:
     Params: -
     Returns: -
     """
-    with StorageCreator().create_weather_storage() as storage:
-        while True:
-            execute_action(storage)
+    App()
 
 
 if __name__ == "__main__":

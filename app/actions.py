@@ -1,6 +1,5 @@
 """Выполнение действий пользователя по введенному номеру"""
 
-from enum import StrEnum
 from typing import Protocol
 
 import sys
@@ -14,12 +13,12 @@ from current_city_searcher.current_city_searcher import CurrentCitySearcher
 from weather_getter import WeatherGetter
 
 
-class Action(Protocol):
+class ActionExecutor(Protocol):
     def execute_action(self, storage: Storage) -> None:
         raise NotImplementedError
 
 
-class GetLocalWeather(Action):
+class GetLocalWeather(ActionExecutor):
     @errors_manager
     def execute_action(self, storage: Storage) -> None:
         """
@@ -33,7 +32,7 @@ class GetLocalWeather(Action):
         print(weather)
 
 
-class GetWeatherbyCityName(Action):
+class GetWeatherbyCityName(ActionExecutor):
     @errors_manager
     def execute_action(self, storage: Storage) -> None:
         """
@@ -55,7 +54,7 @@ class GetWeatherbyCityName(Action):
         print(weather)
 
 
-class GetWeatherHistory(Action):
+class GetWeatherHistory(ActionExecutor):
     @errors_manager
     def execute_action(self, storage: Storage) -> None:
         """
@@ -83,7 +82,7 @@ class GetWeatherHistory(Action):
             print(weather_data)
 
 
-class DeleteWeatherHistory(Action):
+class DeleteWeatherHistory(ActionExecutor):
     @errors_manager
     def execute_action(self, storage: Storage) -> None:
         """
@@ -95,7 +94,7 @@ class DeleteWeatherHistory(Action):
         print(Text.delete_history_text)
 
 
-class ExitApp(Action):
+class ExitApp(ActionExecutor):
     @staticmethod
     def execute_action() -> None:
         """
@@ -104,46 +103,3 @@ class ExitApp(Action):
         Returns: -
         """
         sys.exit(0)
-
-
-class Action(StrEnum):
-    WEATHER_IN_USER_LOCATION = "1"
-    WEATHER_IN_CITY = "2"
-    WEATHER_REQUESTS_HISTORY = "3"
-    DELETE_HISTORY = "4"
-    APP_EXIT = "5"
-
-
-def get_action_by_number(number: str) -> str:
-    """
-    Выбирает функцию по номеру из class Action
-    Params: number - введённый пользователем номер
-    Returns: название функции
-    """
-    actions = {
-        Action.WEATHER_IN_USER_LOCATION: GetLocalWeather,
-        Action.WEATHER_IN_CITY: GetWeatherbyCityName,
-        Action.WEATHER_REQUESTS_HISTORY: GetWeatherHistory,
-        Action.DELETE_HISTORY: DeleteWeatherHistory,
-        Action.APP_EXIT: ExitApp,
-    }
-    return actions[number]
-
-
-def execute_action(storage: Storage) -> None:
-    """
-    Выполняет действие пользователя по номеру из списка
-    Params: storage - хранилище данных о погоде
-    Returns: -
-    """
-    print(Text.start_text)
-    user_input = input().strip().lower()
-    try:
-        action = get_action_by_number(user_input)
-        try:
-            action_execution = action()
-            action_execution.execute_action(storage)
-        except TypeError:
-            action.execute_action()
-    except KeyError:
-        print(Text.wrong_text)
