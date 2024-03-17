@@ -8,9 +8,8 @@ from lexicon import Text
 from errors import WrongCityName
 from decorators import errors_manager
 
-from weather_storage.storages.contracts import Storage
-from current_city_searcher.current_city_searcher import CurrentCitySearcher
-from weather_getter import WeatherGetter
+from weather_storage.contracts import Storage
+from .services_settings import get_city_searcher, get_weather_getter
 
 
 class ActionExecutor(Protocol):
@@ -26,8 +25,8 @@ class GetLocalWeather(ActionExecutor):
         Params: storage - хранилище данных о погоде
         Returns: -
         """
-        city_name = CurrentCitySearcher().get_city()
-        weather = WeatherGetter().get_weather(city_name)
+        city_name = get_city_searcher().get_current_city()
+        weather = get_weather_getter().get_weather_by_city(city_name)
         storage.save_weather_data(weather)
         print(weather)
 
@@ -44,12 +43,12 @@ class GetWeatherbyCityName(ActionExecutor):
         city_name = input().strip().lower()
         while True:
             try:
-                weather = WeatherGetter().get_weather(city_name)
+                weather = get_weather_getter().get_weather_by_city(city_name)
                 break
             except WrongCityName:
                 print(Text.wrong_city_name_text)
                 city_name = input().strip().lower()
-                weather = WeatherGetter().get_weather(city_name)
+                weather = get_weather_getter().get_weather_by_city(city_name)
         storage.save_weather_data(weather)
         print(weather)
 

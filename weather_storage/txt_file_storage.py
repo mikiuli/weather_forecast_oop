@@ -4,11 +4,11 @@ from enum import StrEnum
 
 from .contracts import Storage
 from models.weather import Weather
+from configs.configs import get_production_storage_name
 
 
 class TextFileStorageInfo(StrEnum):
     """Параметры для создания текстового файла"""
-    file_name = "weather_storage.txt"
     encoding = "utf-8"
 
 
@@ -16,8 +16,11 @@ class TextFileStorage(Storage):
     """
     Хранение погоды в виде текстового файла
     """
+    def __init__(self, file_name: str = get_production_storage_name()):
+        self._file_name = f"{file_name}.txt"
+
     def __enter__(self):
-        self.file = open(TextFileStorageInfo.file_name, "a+", encoding=TextFileStorageInfo.encoding)
+        self.file = open(self._file_name, "a+", encoding=TextFileStorageInfo.encoding)
         return self
 
     def __exit__(self, exception_type, exception_value, exception_traceback):
@@ -31,7 +34,7 @@ class TextFileStorage(Storage):
         """
         city_weather_info = (f"{data.current_time}&{data.city}&{data.weather_type}&{data.temperature}"
                              f"&{data.temperature_feels_like}&{data.wind_speed}\n")
-        self.file = open(TextFileStorageInfo.file_name, "a", encoding=TextFileStorageInfo.encoding)
+        self.file = open(self._file_name, "a", encoding=TextFileStorageInfo.encoding)
         self.file.write(city_weather_info)
         self.file.close()
 
@@ -41,7 +44,7 @@ class TextFileStorage(Storage):
         Params: number - количество запросов в виде целого числа
         Returns: список запросов в виде класса Weather
         """
-        self.file = open(TextFileStorageInfo.file_name, "r", encoding=TextFileStorageInfo.encoding)
+        self.file = open(self._file_name, "r", encoding=TextFileStorageInfo.encoding)
         city_weather_infos_list = self.file.readlines()
         self.file.close()
         city_weather_infos_list.reverse()
@@ -62,5 +65,5 @@ class TextFileStorage(Storage):
         Params: -
         Returns: -
         """
-        self.file = open(TextFileStorageInfo.file_name, "w", encoding=TextFileStorageInfo.encoding)
+        self.file = open(self._file_name, "w", encoding=TextFileStorageInfo.encoding)
         self.file.close()

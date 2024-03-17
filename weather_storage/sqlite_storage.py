@@ -5,6 +5,7 @@ import sqlite3
 from .contracts import Storage
 from errors.errors import NoConnectionWithDBError
 from models.weather import Weather
+from configs.configs import get_production_storage_name
 
 CREATE_TABLE_QUERY = """CREATE TABLE IF NOT EXISTS weather_data (
     id INTEGER PRIMARY KEY,
@@ -30,9 +31,12 @@ class SQLiteStorage(Storage):
     """
     Хранение погоды в базе данных sqlite3
     """
+    def __init__(self, db_name: str = get_production_storage_name()):
+        self._db_name = f"{db_name}.db"
+
     def __enter__(self):
         try:
-            self.connection = sqlite3.connect("weather_forecast.db")
+            self.connection = sqlite3.connect(self._db_name)
             self._init_table()
             return self
         except sqlite3.OperationalError:

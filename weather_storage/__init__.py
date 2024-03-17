@@ -1,3 +1,3 @@
-from .storage_creator import StorageCreator
+from .available_storages import AvailableStorage
 
-__all__ = [StorageCreator, ]
+__all__ = [AvailableStorage]

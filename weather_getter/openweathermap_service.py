@@ -25,8 +25,6 @@ class OpenWeatherapiService(WeatherDataReceivingService):
             openweatherAPI_key=get_openweather_key(),
             city_name=city_name
         )
-        if isinstance(openweather_response, int):
-            return openweather_response
         weather = self._parse_openweather_response(openweather_response)
         return weather
 

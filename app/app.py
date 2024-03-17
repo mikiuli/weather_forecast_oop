@@ -1,9 +1,13 @@
+"""Запуск приложения"""
+
 from enum import StrEnum
 
 from .actions import GetLocalWeather, GetWeatherbyCityName, GetWeatherHistory, DeleteWeatherHistory, ExitApp
-from weather_storage import StorageCreator
+
+from .services_settings import get_storage
+
 from lexicon.lexicon_ru import Text
-from weather_storage.storages.contracts import Storage
+from weather_storage.contracts import Storage
 
 
 class Action(StrEnum):
@@ -16,7 +20,10 @@ class Action(StrEnum):
 
 class App:
     def __init__(self):
-        with StorageCreator().create_weather_storage() as storage:
+        self.start_app()
+
+    def start_app(self):
+        with get_storage() as storage:
             while True:
                 self.execute_action(storage)
 

@@ -1,3 +1,3 @@
-from .current_city_searcher import CurrentCitySearcher
+from .available_city_searchers import AvailableCitySearcher
 
-__all__ = [CurrentCitySearcher, ]
+__all__ = [AvailableCitySearcher, ]

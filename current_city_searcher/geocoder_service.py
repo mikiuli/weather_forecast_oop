@@ -3,6 +3,7 @@
 import geocoder
 
 from .contracts import CurrentCitySearcherService
+from errors.errors import CantGetUserCityError
 
 
 class GeocoderService(CurrentCitySearcherService):
@@ -13,5 +14,8 @@ class GeocoderService(CurrentCitySearcherService):
         Params: -
         Returns: название города
         """
-        geodata = geocoder.ip("me")
-        return geodata.city
+        try:
+            geodata = geocoder.ip("me")
+            return geodata.city
+        except Exception:
+            raise CantGetUserCityError()

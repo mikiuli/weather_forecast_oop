@@ -3,5 +3,9 @@ venv
 setup.cfg
 __pycache__
 weather_forecast.db
-weather_storage.txt
+weather_forecast_test.db
+weather_forecast.txt
+weather_forecast_test.txt
 .pre-commit-config.yaml
+.pytest_cache
+pyproject.toml
