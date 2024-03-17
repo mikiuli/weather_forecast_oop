@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 
-from .actions import GetLocalWeather, GetWeatherbyCityName, GetWeatherHistory, DeleteWeatherHistory, ExitApp
+from .action_executors import GetLocalWeather, GetWeatherbyCityName, GetWeatherHistory, DeleteWeatherHistory, ExitApp
 
 from .services_settings import get_storage
 
@@ -25,9 +25,9 @@ class App:
     def start_app(self):
         with get_storage() as storage:
             while True:
-                self.execute_action(storage)
+                self._create_loop(storage)
 
-    def get_action_by_number(self, number: str) -> str:
+    def _get_action_by_number(self, number: str) -> str:
         """
         Выбирает функцию по номеру из class Action
         Params: number - введённый пользователем номер
@@ -42,7 +42,7 @@ class App:
         }
         return actions[number]
 
-    def execute_action(self, storage: Storage) -> None:
+    def _create_loop(self, storage: Storage) -> None:
         """
         Выполняет действие пользователя по номеру из списка
         Params: storage - хранилище данных о погоде
@@ -51,7 +51,7 @@ class App:
         print(Text.start_text)
         user_input = input().strip().lower()
         try:
-            action = self.get_action_by_number(user_input)
+            action = self._get_action_by_number(user_input)
             try:
                 action_execution = action()
                 action_execution.execute_action(storage)
