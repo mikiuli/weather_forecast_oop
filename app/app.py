@@ -8,6 +8,7 @@ from .services_settings import get_storage
 
 from lexicon.lexicon_ru import Text
 from weather_storage.contracts import Storage
+from logs.logers.logers import Loger
 
 
 class Action(StrEnum):
@@ -20,12 +21,12 @@ class Action(StrEnum):
 
 class App:
     def __init__(self):
-        self.start_app()
+        Loger().info(module=__name__, msg="Создался экземпляр класса App")
 
-    def start_app(self):
+    def start_app(self) -> None:
         with get_storage() as storage:
-            while True:
-                self._create_loop(storage)
+            Loger().info(module=__name__, msg="Получили экземпляр выбранного класса хранилища")
+            self._create_loop(storage)
 
     def _get_action_by_number(self, number: str) -> str:
         """
@@ -48,14 +49,17 @@ class App:
         Params: storage - хранилище данных о погоде
         Returns: -
         """
-        print(Text.start_text)
-        user_input = input().strip().lower()
-        try:
-            action = self._get_action_by_number(user_input)
+        Loger().info(module=__name__, msg="Вошли в цикл")
+        while True:
+            print(Text.start_text)
+            user_input = input().strip().lower()
+            Loger().info(module=__name__, msg=f"Выполняю действие {user_input}")
             try:
-                action_execution = action()
-                action_execution.execute_action(storage)
-            except TypeError:
-                action.execute_action()
-        except KeyError:
-            print(Text.wrong_text)
+                action = self._get_action_by_number(user_input)
+                try:
+                    action().execute_action(storage)
+                except TypeError:
+                    action().execute_action()
+            except KeyError:
+                Loger().info(module=__name__, msg="Такого действия нет")
+                print(Text.wrong_text)

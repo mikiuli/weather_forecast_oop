@@ -9,3 +9,4 @@ weather_forecast_test.txt
 .pre-commit-config.yaml
 .pytest_cache
 pyproject.toml
+log_storage.txt

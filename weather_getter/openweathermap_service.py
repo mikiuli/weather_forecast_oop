@@ -11,6 +11,7 @@ from .contracts import WeatherDataReceivingService
 from models.weather import Weather, Celsius, MetresPerSec
 from errors import errors
 from configs.configs import get_openweather_key
+from logs.logers.logers import Loger
 
 
 class OpenWeatherapiService(WeatherDataReceivingService):
@@ -21,11 +22,11 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         Params: city - название города
         Returns: погоду в виде экземпляра класса Weather
         """
-        openweather_response = self._get_openweather_response(
+        json_openweather_response = self._get_openweather_response(
             openweatherAPI_key=get_openweather_key(),
             city_name=city_name
         )
-        weather = self._parse_openweather_response(openweather_response)
+        weather = self._parse_openweather_response(json_openweather_response)
         return weather
 
     @staticmethod
@@ -36,8 +37,12 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         returns: булевое значение
         """
         if status_code == HTTPStatus.OK:
+            Loger().info(module=__name__,
+                         msg=f"Ответ сервера со статусом {HTTPStatus.OK}")
             return True
         if status_code == HTTPStatus.NOT_FOUND:
+            Loger().info(module=__name__,
+                         msg=f"Ответ сервера со статусом {HTTPStatus.NOT_FOUND}")
             raise errors.WrongCityName()
         if status_code == HTTPStatus.UNAUTHORIZED:
             raise errors.WrongAPIError()
@@ -56,13 +61,19 @@ class OpenWeatherapiService(WeatherDataReceivingService):
                f"appid={openweatherAPI_key}&"
                "units=metric&lang=ru")
         try:
+            Loger().info(module=__name__,
+                         msg=f"Получаю ответ от внешнего сервера {url}")
             response = requests.get(url=url, timeout=3, params={"q": city_name})
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
             raise errors.InternetIsNotAvailable()
         if OpenWeatherapiService._check_status_code_OK(response.status_code):
             try:
+                Loger().info(module=__name__,
+                             msg="Преобразую ответ сервера в JSON")
                 openweather_dict = json.loads(response.text)
-            except JSONDecodeError:
+            except JSONDecodeError as e:
+                Loger().critical(module=__name__,
+                                 msg=f"Не могу преобразовать ответ сервера в JSON из-за {e}")
                 raise errors.APIServiceError()
             return openweather_dict
 
@@ -90,6 +101,7 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         params: openweather_dict - словарь
         returns: время в datetime формате
         """
+        Loger().info(module=__name__, msg="Получаю текущее время")
         date = openweather_dict["dt"]
         tzinfo = openweather_dict["timezone"]
         tz = timezone(timedelta(seconds=tzinfo))
@@ -102,6 +114,7 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         params: openweather_dict - словарь
         returns: имя города
         """
+        Loger().info(module=__name__, msg="Получаю название города")
         return openweather_dict["name"]
 
     def _fetch_temperature(self, openweather_dict: dict) -> Celsius:
@@ -110,6 +123,7 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         params: openweather_dict - словарь
         returns: температуру в цельсиях
         """
+        Loger().info(module=__name__, msg="Получаю температуру")
         return round(openweather_dict["main"]["temp"])
 
     def _fetch_temp_feels_like(self, openweather_dict) -> Celsius:
@@ -118,6 +132,7 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         params: openweather_dict - словарь
         returns: температуру "ощущается как"
         """
+        Loger().info(module=__name__, msg="Получаю температуру \"ощущается как\"")
         return round(openweather_dict["main"]["feels_like"])
 
     def _fetch_wind_speed(self, openweather_dict: dict) -> MetresPerSec:
@@ -126,6 +141,7 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         params: openweather_dict - словарь
         returns: скорость ветра
         """
+        Loger().info(module=__name__, msg="Получаю скорость ветра")
         return round(openweather_dict["wind"]["speed"])
 
     def _fetch_weather_type(self, openweather_dict: dict) -> str:
@@ -134,4 +150,5 @@ class OpenWeatherapiService(WeatherDataReceivingService):
         params: openweather_dict - словарь
         returns: один из объектов класса WatherType
         """
+        Loger().info(module=__name__, msg="Получаю описание погоды")
         return str(openweather_dict["weather"][0]["description"])

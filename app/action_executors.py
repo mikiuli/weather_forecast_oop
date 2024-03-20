@@ -10,6 +10,7 @@ from decorators import errors_manager
 
 from weather_storage.contracts import Storage
 from .services_settings import get_city_searcher, get_weather_getter
+from logs.logers.logers import Loger
 
 
 class ActionExecutor(Protocol):
@@ -26,8 +27,13 @@ class GetLocalWeather(ActionExecutor):
         Returns: -
         """
         city_name = get_city_searcher().get_current_city()
+        Loger().info(module=__name__, msg=f"Получила город {city_name}")
+
         weather = get_weather_getter().get_weather_by_city(city_name)
+        Loger().info(module=__name__, msg=f"Получаю погоду \n{str(weather)}перехожу к сохранению в хранилище")
+
         storage.save_weather_data(weather)
+
         print(weather)
 
 
@@ -40,16 +46,25 @@ class GetWeatherbyCityName(ActionExecutor):
         Returns: -
         """
         print(Text.print_city_name_text)
+
         city_name = input().strip().lower()
+        Loger().info(module=__name__, msg=f"Получаю от пользователя потенциальное название города города {city_name}")
+
         while True:
             try:
                 weather = get_weather_getter().get_weather_by_city(city_name)
+                Loger().info(module=__name__, msg=f"Получаю погоду \n{str(weather)}перехожу к сохранению в хранилище")
                 break
-            except WrongCityName:
+
+            except WrongCityName as e:
+                Loger().info(module=__name__, msg=f"Введено некоректное название города, вернулась ошибка {e}")
                 print(Text.wrong_city_name_text)
+
+                Loger().info(module=__name__, msg="Запрашиваю название города снова")
                 city_name = input().strip().lower()
-                weather = get_weather_getter().get_weather_by_city(city_name)
+
         storage.save_weather_data(weather)
+
         print(weather)
 
 
@@ -62,20 +77,29 @@ class GetWeatherHistory(ActionExecutor):
         Returns: -
         """
         print(Text.requests_number_text)
+        Loger().info(module=__name__,
+                     msg="Получаю количество запросов, которые хочет получить пользователь из хранилища")
         weather_data_number = input().strip().lower()
+
+        Loger().info(module=__name__, msg="Проверяю, ввёл ли пользователь целое число")
         while True:
             try:
                 if "." in weather_data_number:
                     raise ValueError
+                Loger().info(module=__name__, msg="Пытаюсь преобразовать к целому числу")
                 weather_data_number = int(weather_data_number)
                 if weather_data_number < 0:
                     raise ValueError
                 else:
                     break
             except ValueError:
+                Loger().info(module=__name__, msg=f"Невалидный ввод {weather_data_number}")
                 print(Text.wrong_text)
                 weather_data_number = input().strip().lower()
-        weather_datas_list = storage.get_weather_data(int(weather_data_number))
+
+        Loger().info(module=__name__,
+                     msg="Получаю данные о предыдущих запросах прогноза погоды в виде списка из хранилища")
+        weather_datas_list = storage.get_weather_data(weather_data_number)
         for number, weather_data in enumerate(weather_datas_list, 1):
             print("--------------"+str(number)+"--------------")
             print(weather_data)
@@ -88,7 +112,8 @@ class DeleteWeatherHistory(ActionExecutor):
         Удаляет историю запросов погоды
         Params: storage - хранилище данных о погоде
         Returns: -
-            """
+        """
+        Loger().info(module=__name__, msg="Удаляю всю информацию о запросах погоды из хранилища")
         storage.delete_weather_data()
         print(Text.delete_history_text)
 
@@ -101,4 +126,5 @@ class ExitApp(ActionExecutor):
         Params: -
         Returns: -
         """
+        Loger().info(module=__name__, msg="Выхожу из приложения")
         sys.exit(0)

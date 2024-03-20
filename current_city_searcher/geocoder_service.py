@@ -4,6 +4,7 @@ import geocoder
 
 from .contracts import CurrentCitySearcherService
 from errors.errors import CantGetUserCityError
+from logs.logers.logers import Loger
 
 
 class GeocoderService(CurrentCitySearcherService):
@@ -16,6 +17,10 @@ class GeocoderService(CurrentCitySearcherService):
         """
         try:
             geodata = geocoder.ip("me")
-            return geodata.city
+            city = geodata.city
+            Loger().info(module=__name__, msg="Получаю название города")
+            if city is None:
+                raise CantGetUserCityError()
+            return city
         except Exception:
             raise CantGetUserCityError()
