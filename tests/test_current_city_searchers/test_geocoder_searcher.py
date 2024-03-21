@@ -1,10 +1,12 @@
+"""Тестирование модуля current_city_searcher.geocoder_service"""
+
 from current_city_searcher.geocoder_service import GeocoderService
 
 
 # pytest ./tests/test_current_city_searchers/test_geocoder_searcher.py
 
 class TestGeocoderService:
-
+    """Тесты для GeocoderService"""
     def setup_method(self, method):
         print(f"Setting up {method}")
         self.city_service = GeocoderService()

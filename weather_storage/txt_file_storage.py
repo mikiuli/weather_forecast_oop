@@ -14,9 +14,8 @@ class TextFileStorageInfo(StrEnum):
 
 
 class TextFileStorage(Storage):
-    """
-    Хранение погоды в виде текстового файла
-    """
+    """Хранение погоды в виде текстового файла"""
+
     def __init__(self, file_name: str = get_production_storage_name()):
         self._file_name = f"{file_name}.txt"
 
@@ -29,7 +28,7 @@ class TextFileStorage(Storage):
                      msg=f"Отправляю экземпляр класса {__class__.__name__}")
         return self
 
-    def __exit__(self, exception_type, exception_value, exception_traceback):
+    def __exit__(self, exception_type, exception_value, exception_traceback) -> None:
         Loger().info(module=__name__,
                      msg="Закрываю соединение с текстовым файлом")
         self.file.close()
@@ -77,7 +76,7 @@ class TextFileStorage(Storage):
                      msg="Отправляю данные о предыдущих запросах прогноза погоды в виде списка")
         return weather_datas_list
 
-    def delete_weather_data(self):
+    def delete_weather_data(self) -> None:
         """
         Удаляет историю запросов погоды
         Params: -

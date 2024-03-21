@@ -33,8 +33,8 @@ class OpenWeatherapiService(WeatherDataReceivingService):
     def _check_status_code_OK(status_code: requests.status_codes) -> bool:
         """
         Проверяет статус код, который присылает сервер
-        params: status_code - код ответа сервера
-        returns: булевое значение
+        Params: status_code - код ответа сервера
+        Returns: bool
         """
         if status_code == HTTPStatus.OK:
             Loger().info(module=__name__,
@@ -53,9 +53,9 @@ class OpenWeatherapiService(WeatherDataReceivingService):
     def _get_openweather_response(self, openweatherAPI_key: str, city_name: str) -> dict:
         """
         Получает ответ от сервера, райзит ошибку, если проблемы с соединением
-        params: openweatherAPI - API-ключ от openweathermap.org,
+        Params: openweatherAPI - API-ключ от openweathermap.org,
         city_name - имя города, погоду в котором хочет получить пользователь
-        returns: Возвращает тело полученного ответа в виде текста
+        Returns: Возвращает тело полученного ответа в виде json
         """
         url = ("https://api.openweathermap.org/data/2.5/weather?"
                f"appid={openweatherAPI_key}&"
@@ -80,7 +80,7 @@ class OpenWeatherapiService(WeatherDataReceivingService):
     def _parse_openweather_response(self, openweather_dict: dict) -> Weather:
         """
         Превращает словарь в класс Weather
-        params: openweather_response - тело полученного ответа в виде текса
+        params: openweather_response - тело полученного ответа в виде json
         returns: погоду в виде класса Weather
         """
         try:
@@ -97,7 +97,7 @@ class OpenWeatherapiService(WeatherDataReceivingService):
 
     def _fetch_current_time(self, openweather_dict: dict) -> datetime:
         """
-        Получает текущее время из словаря
+        Получает текущее время
         params: openweather_dict - словарь
         returns: время в datetime формате
         """

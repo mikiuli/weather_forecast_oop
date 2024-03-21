@@ -8,15 +8,14 @@ from logs.logers.logers import Loger
 
 
 class ListStorage(Storage):
-    """
-    Хранение погоды в виде списка
-    """
+    """Хранение погоды в виде списка"""
+
     def __enter__(self):
         self.weather_storage_list = []
         Loger().info(module=__name__, msg=f"Отправляю экземпляр класса {__class__.__name__}")
         return self
 
-    def __exit__(self, exception_type, exception_value, exception_traceback):
+    def __exit__(self, exception_type, exception_value, exception_traceback) -> None:
         pass
 
     def save_weather_data(self, data: Weather) -> None:

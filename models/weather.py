@@ -1,4 +1,5 @@
 """Содержит датакласс Weather"""
+
 from typing import TypeAlias
 from dataclasses import dataclass
 from datetime import datetime
@@ -20,8 +21,8 @@ class Weather:
     def __repr__(self) -> str:
         """
         Форматирует экземпляр класса для вывода в консоль
-        params: -
-        returns: строка с информацией о погоде
+        Params: -
+        Returns: строка с информацией о погоде
         """
         return (f"Текущее время: {self.current_time}\n"
                 f"Название города: {self.city}\n"
@@ -38,8 +39,8 @@ class Weather:
         """
         Изменяет окончание слова "градус" в зависимости от числительного
         перед ним
-        params: temp: температура в цельсиях
-        returns: окончание для слова "градус"
+        Params: temp: температура в цельсиях
+        Returns: окончание для слова "градус"
         """
         if str(temp)[-1] == "1" and abs(temp) != 11:
             return ""

@@ -33,10 +33,9 @@ class Query(Enum):
 
 
 class SQLiteStorage(Storage):
-    """
-    Хранение погоды в базе данных sqlite3
-    """
-    def __init__(self, db_name: str = get_production_storage_name()):
+    """Хранение погоды в базе данных sqlite3"""
+
+    def __init__(self, db_name: str = get_production_storage_name()) -> None:
         self._db_name = f"{db_name}.db"
 
     def __enter__(self):
@@ -49,7 +48,7 @@ class SQLiteStorage(Storage):
         except sqlite3.OperationalError:
             raise NoConnectionWithDBError()
 
-    def __exit__(self, exception_type, exception_value, exception_traceback):
+    def __exit__(self, exception_type, exception_value, exception_traceback) -> None:
         Loger().info(module=__name__,
                      msg="Закрываю соединение с базой данных")
         self.connection.close()
@@ -81,7 +80,7 @@ class SQLiteStorage(Storage):
         except sqlite3.OperationalError:
             raise NoConnectionWithDBError()
 
-    def save_weather_data(self, data):
+    def save_weather_data(self, data) -> None:
         """
         Сохраняет запрос прогноза погоды
         Params: data - прогноз погоды в виде класса Weather
@@ -128,7 +127,7 @@ class SQLiteStorage(Storage):
         except sqlite3.OperationalError:
             raise NoConnectionWithDBError()
 
-    def delete_weather_data(self):
+    def delete_weather_data(self) -> None:
         """
         Удаляет историю запросов погоды
         Params: -
@@ -139,7 +138,7 @@ class SQLiteStorage(Storage):
 
             Loger().info(module=__name__,
                          msg="Удаляю все запросы прогноза погоды из базы данных")
-            cursor.execute(Query.DELETE_ALL_REQUESTS_QUERY.value())
+            cursor.execute(Query.DELETE_ALL_REQUESTS_QUERY.value)
 
             Loger().info(module=__name__,
                          msg="Сохраняю изменения")

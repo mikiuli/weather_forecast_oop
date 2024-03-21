@@ -1,3 +1,5 @@
+"""Пример прогноза погоды в виде класса Weather"""
+
 import pytest
 
 from models.weather import Weather
@@ -5,6 +7,11 @@ from models.weather import Weather
 
 @pytest.fixture(scope="function")
 def weather_data_samples() -> list[Weather]:
+    """
+    Возвращает 3 примера прогноза погоды в виде класса Weather
+    Params: -
+    Returns: список из 3 экземпляров класса Weather
+    """
     first_weather_data = Weather(current_time="2024-03-15 00:07:31+03:00",
                                  city="Санкт-Петербург",
                                  weather_type="облачно с прояснениями",

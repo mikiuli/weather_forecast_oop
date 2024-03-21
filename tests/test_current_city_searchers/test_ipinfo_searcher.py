@@ -1,10 +1,12 @@
+"""Тестирование модуля current_city_searcher.ipinfo_service"""
+
 from current_city_searcher.ipinfo_service import IpinfoService
 
 
 # pytest ./tests/test_current_city_searchers/test_ipinfo_searcher.py
 
 class TestIpinfoService:
-
+    """Тестирование IpinfoService"""
     def setup_method(self, method):
         print(f"Setting up {method}")
         self.city_service = IpinfoService()

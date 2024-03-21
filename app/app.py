@@ -20,10 +20,15 @@ class Action(StrEnum):
 
 
 class App:
-    def __init__(self):
+    def __init__(self) -> None:
         Loger().info(module=__name__, msg="Создался экземпляр класса App")
 
     def start_app(self) -> None:
+        """
+        Запускает приложение, создаёт экземпляр хранилища
+        Params: -
+        Returns: -
+        """
         with get_storage() as storage:
             Loger().info(module=__name__, msg="Получили экземпляр выбранного класса хранилища")
             self._create_loop(storage)
@@ -45,7 +50,7 @@ class App:
 
     def _create_loop(self, storage: Storage) -> None:
         """
-        Выполняет действие пользователя по номеру из списка
+        Создаёт бесконечный цикл, в котором выполняются действия пользователя
         Params: storage - хранилище данных о погоде
         Returns: -
         """

@@ -1,3 +1,5 @@
+"""Тестирование OpenWeatherapiService"""
+
 import pytest
 
 from models.weather import Weather
@@ -8,7 +10,7 @@ from errors.errors import WrongCityName
 # pytest ./tests/test_weather_getters/test_openweathermap_service.py
 
 class TestOpenWeatherapiService:
-
+    """Тестирование OpenWeatherapiService"""
     def setup_method(self, method):
         print(f"Setting up {method}")
         self.weather_service = OpenWeatherapiService()

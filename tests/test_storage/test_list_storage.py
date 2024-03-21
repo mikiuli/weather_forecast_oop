@@ -1,3 +1,5 @@
+"""Тестирование ListStorage"""
+
 from tests.fixtures.storage_sample_creator import list_storage
 from tests.fixtures.weather_samples import weather_data_samples
 
@@ -6,7 +8,8 @@ all = [list_storage, weather_data_samples, ]
 # pytest ./tests/test_storage/test_list_storage.py
 
 
-class TestSQLiteStorage:
+class TestListStorage:
+    """Тестирование ListStorage"""
     def setup_method(self):
         self.data_length = 3
         self.less_lenght_data = 2

@@ -1,3 +1,5 @@
+"""Тестирование TxtFileStorage"""
+
 from tests.fixtures.storage_sample_creator import text_storage
 from tests.fixtures.weather_samples import weather_data_samples
 
@@ -7,6 +9,7 @@ __all__ = [text_storage, weather_data_samples, ]
 
 
 class TestTxtFileStorage:
+    """Тестирование TxtFileStorage"""
     def setup_method(self):
         self.data_length = 3
         self.less_lenght_data = 2
