@@ -3,13 +3,13 @@
 import ipinfo
 import requests
 
-from .contracts import CurrentCitySearcherService
+from .contracts import CurrentCitySearcher
 from configs.configs import get_ipinfo_access_token
 from errors.errors import CantGetUserCityError
 from logs.logers.logers import Loger
 
 
-class IpinfoService(CurrentCitySearcherService):
+class IpinfoSearcher(CurrentCitySearcher):
     """Возвращает город пользователя, используя библиотеку ipinfo"""
     def get_current_city(self) -> str:
         """

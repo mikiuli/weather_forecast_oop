@@ -10,7 +10,8 @@ def main() -> None:
     Params: -
     Returns: -
     """
-    Loger().info(module=__name__, msg="\n\n\n Запускаю приложение\n")
+    Loger().clear_storage()
+    Loger().info(module=__name__, msg="Запускаю приложение")
     App().start_app()
 
 

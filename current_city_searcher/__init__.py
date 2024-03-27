@@ -1,3 +1,4 @@
-from .available_city_searchers import AvailableCitySearcher
+from .geocoder_searcher import GeocoderSearcher
+from .ipinfo_searcher import IpinfoSearcher
 
-__all__ = [AvailableCitySearcher, ]
+__all__ = [GeocoderSearcher, IpinfoSearcher, ]

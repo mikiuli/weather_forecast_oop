@@ -9,7 +9,8 @@ from errors import WrongCityName
 from decorators import errors_manager
 
 from weather_storage.contracts import Storage
-from .services_settings import get_city_searcher, get_weather_getter
+from weather_getter import OpenWeatherapiService
+from current_city_searcher import IpinfoSearcher
 from logs.logers.logers import Loger
 
 
@@ -26,10 +27,10 @@ class GetLocalWeather(ActionExecutor):
         Params: storage - хранилище данных о погоде
         Returns: -
         """
-        city_name = get_city_searcher().get_current_city()
+        city_name = IpinfoSearcher().get_current_city()
         Loger().info(module=__name__, msg=f"Получила город {city_name}")
 
-        weather = get_weather_getter().get_weather_by_city(city_name)
+        weather = OpenWeatherapiService().get_weather_by_city(city_name)
         Loger().info(module=__name__, msg=f"Получаю погоду \n{str(weather)}перехожу к сохранению в хранилище")
 
         storage.save_weather_data(weather)
@@ -52,7 +53,7 @@ class GetWeatherbyCityName(ActionExecutor):
 
         while True:
             try:
-                weather = get_weather_getter().get_weather_by_city(city_name)
+                weather = OpenWeatherapiService().get_weather_by_city(city_name)
                 Loger().info(module=__name__, msg=f"Получаю погоду \n{str(weather)}перехожу к сохранению в хранилище")
                 break
 

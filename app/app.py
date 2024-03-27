@@ -4,7 +4,7 @@ from enum import StrEnum
 
 from .action_executors import GetLocalWeather, GetWeatherbyCityName, GetWeatherHistory, DeleteWeatherHistory, ExitApp
 
-from .services_settings import get_storage
+from weather_storage import SQLiteStorage
 
 from lexicon.lexicon_ru import Text
 from weather_storage.contracts import Storage
@@ -29,7 +29,7 @@ class App:
         Params: -
         Returns: -
         """
-        with get_storage() as storage:
+        with SQLiteStorage() as storage:
             Loger().info(module=__name__, msg="Получили экземпляр выбранного класса хранилища")
             self._create_loop(storage)
 

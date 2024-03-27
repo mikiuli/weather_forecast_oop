@@ -3,7 +3,7 @@
 from typing import Protocol
 
 
-class CurrentCitySearcherService(Protocol):
+class CurrentCitySearcher(Protocol):
     """Интерфейс класса для получения названия города, в котором сейчас находится пользователь"""
     def get_current_city(self) -> str:
         """

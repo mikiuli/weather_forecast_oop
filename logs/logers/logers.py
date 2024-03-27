@@ -5,7 +5,7 @@ import datetime
 import traceback
 import dataclasses
 
-from ..logs_storages.logs_storages import LogStorage, get_log_storage
+from ..logs_storages.logs_storages import LogStorage, FileLogStorage
 
 
 class LogType(Enum):
@@ -34,8 +34,11 @@ class LogContent:
 
 class Loger:
     """Логер: добавляет лог в хранилище"""
-    def __init__(self, storage: LogStorage = get_log_storage()) -> None:
+    def __init__(self, storage: LogStorage = FileLogStorage()) -> None:
         self._storage = storage
+
+    def clear_storage(self) -> None:
+        self._storage.clear()
 
     def error(self, module: str, msg: str, with_tb: bool = False) -> None:
         self._add_log(LogType.ERROR, module, msg, with_tb)

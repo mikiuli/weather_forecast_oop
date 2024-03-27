@@ -1,11 +1,10 @@
 """Реализует хранилища для логов и выбор хранилища"""
 
 from typing import Protocol
-from enum import Enum
 
 
 class LogStorage(Protocol):
-    def save(log: str) -> None:
+    def save(self, log: str) -> None:
         """
         Сохраняет лог
         Params: log - лог
@@ -13,8 +12,16 @@ class LogStorage(Protocol):
         """
         raise NotImplementedError
 
+    def clear(self) -> None:
+        """
+        Удаляет логи из хранилища
+        Params: log - лог
+        Returns: -
+        """
+        raise NotImplementedError
 
-class LogFileStorage(LogStorage):
+
+class FileLogStorage(LogStorage):
     def save(self, log: str):
         """
         Сохраняет лог в текстовом файле
@@ -24,16 +31,11 @@ class LogFileStorage(LogStorage):
         with open(file="log_storage.txt", mode="a", encoding="utf-8") as file:
             file.write(log)
 
-
-class AvailableLogStorage(Enum):
-    """Доступные классы, в которых реализовано хранение логов"""
-    text_file_storage = LogFileStorage
-
-
-def get_log_storage() -> LogStorage:
-    """
-    Задаёт класс для хранения логов и возвращает экземпляр этого класса
-    Params: -
-    Returns: LogStorage
-    """
-    return AvailableLogStorage.text_file_storage.value()
+    def clear(self) -> None:
+        """
+        Удаляет логи из хранилища
+        Params: -
+        Returns: -
+        """
+        file = open(file="log_storage.txt", mode="w", encoding="utf-8")
+        file.close()

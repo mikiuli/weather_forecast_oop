@@ -2,12 +2,12 @@
 
 import geocoder
 
-from .contracts import CurrentCitySearcherService
+from .contracts import CurrentCitySearcher
 from errors.errors import CantGetUserCityError
 from logs.logers.logers import Loger
 
 
-class GeocoderService(CurrentCitySearcherService):
+class GeocoderSearcher(CurrentCitySearcher):
     """Получает название города, в котором сейчас находится пользователь с помощью сервера geocoder"""
     def get_current_city(self) -> str:
         """

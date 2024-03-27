@@ -1,3 +1,3 @@
-from .available_weather_getters import AvailableWeatherGetter
+from .openweathermap_service import OpenWeatherapiService
 
-__all__ = [AvailableWeatherGetter, ]
+__all__ = [OpenWeatherapiService, ]
